@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -6,7 +8,10 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <button class="btn @(_isDarkTheme ? "btn-light" : "btn-dark")" @onclick="ToggleTheme">
+                @(_isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme")
+            </button>
+            <a href="https://github.com/NotCoffee418/GuitarTabTools" target="_blank">GitHub</a>
         </div>
 
         <article class="content px-4">
@@ -14,3 +19,33 @@
         </article>
     </main>
 </div>
+
+@code {
+    private bool _isDarkTheme = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load theme preference from localStorage during initialization
+        var theme = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "theme");
+        _isDarkTheme = theme == "dark";
+
+        // Apply the theme immediately
+        ApplyTheme();
+    }
+
+    private void ToggleTheme()
+    {
+        _isDarkTheme = !_isDarkTheme;
+        ApplyTheme();
+    }
+
+    private void ApplyTheme()
+    {
+        // Set the data-bs-theme attribute
+        JSRuntime.InvokeVoidAsync("document.documentElement.setAttribute",
+            "data-bs-theme", _isDarkTheme ? "dark" : "light");
+
+        // Save preference to localStorage
+        JSRuntime.InvokeVoidAsync("localStorage.setItem", "theme", _isDarkTheme ? "dark" : "light");
+    }
+}

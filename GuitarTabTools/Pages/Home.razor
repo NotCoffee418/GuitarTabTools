@@ -1,7 +1,54 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Color Guitar Tabs Tool</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<input type="checkbox" @bind="HasDoubleNewline" /> Fix Double Newline (for Ultimate Guitar tabs)
+<InputTextArea class="guitarTab" @bind-Value="TabInputString" @bind-Value:after="generateColoredTabs" Rows="10" Style="width: 100%;" />
+<button class="btn btn-primary btn-md" @onclick="generateColoredTabs">Generate Colored Tabs</button>
+<div class="guitarTab">
+    @TabOutput
+</div>
+
+
+@code {
+    private bool HasDoubleNewline { get; set; } = true;
+    private string TabInputString { get; set; } = string.Empty;
+    private MarkupString TabOutput = new MarkupString(string.Empty);
+
+    private void generateColoredTabs()
+    {
+        string modifiedTabInput = TabInputString;
+
+        // Apply whitespace fix
+        if (HasDoubleNewline)
+        {
+            if (modifiedTabInput.Contains("\r\n"))
+                modifiedTabInput = modifiedTabInput.Replace("\r\n\r\n", "\r\n");
+            else 
+                modifiedTabInput = modifiedTabInput.Replace("\n\n", "\n");
+        }
+
+        // Generate Colored Tab HTML
+        string htmlOutput = TabColoring.GenerateColoredTabHtml(
+            modifiedTabInput, ColorPresets.Rocksmith_Guitar_EStandard_Preset);
+
+        // Output it
+        TabOutput = new MarkupString(htmlOutput);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine("Component rendered for the first time");
+        }
+    }
+}
+
+<style>
+
+    .guitarTab {
+        font-family: 'Roboto Mono', monospace;
+    }
+</style>
