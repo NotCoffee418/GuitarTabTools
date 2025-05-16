@@ -1,11 +1,14 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Color Guitar Tabs Tool</PageTitle>
 
-
+<h1>Color Tabs</h1>
+<p>Paste guitar tabs below to view or print a version of it with colored strings.</p>
 <input type="checkbox" @bind="HasDoubleNewline" /> Fix Double Newline (for Ultimate Guitar tabs)
-<InputTextArea class="guitarTab" @bind-Value="TabInputString" @bind-Value:after="generateColoredTabs" Rows="10" Style="width: 100%;" />
-<button class="btn btn-primary btn-md" @onclick="generateColoredTabs">Generate Colored Tabs</button>
+<InputTextArea class="guitarTab" @bind-Value="TabInputString" Rows="10" Style="width: 100%;" />
+<button class="btn btn-primary btn-md" @onclick="previewColoredTabs">Preview Colored Tabs</button>
+<button class="btn btn-primary btn-md" @onclick="printColoredTabs">Print Colored Tabs</button>
 <div class="guitarTab">
     @TabOutput
 </div>
@@ -16,7 +19,7 @@
     private string TabInputString { get; set; } = string.Empty;
     private MarkupString TabOutput = new MarkupString(string.Empty);
 
-    private void generateColoredTabs()
+    private string getColoredTabsHtmlString()
     {
         string modifiedTabInput = TabInputString;
 
@@ -25,23 +28,32 @@
         {
             if (modifiedTabInput.Contains("\r\n"))
                 modifiedTabInput = modifiedTabInput.Replace("\r\n\r\n", "\r\n");
-            else 
+            else
                 modifiedTabInput = modifiedTabInput.Replace("\n\n", "\n");
         }
 
         // Generate Colored Tab HTML
-        string htmlOutput = TabColoring.GenerateColoredTabHtml(
+        return TabColoring.GenerateColoredTabHtml(
             modifiedTabInput, ColorPresets.Rocksmith_Guitar_EStandard_Preset);
+    }
 
-        // Output it
+    private void previewColoredTabs()
+    {
+        string htmlOutput = getColoredTabsHtmlString();
         TabOutput = new MarkupString(htmlOutput);
+    }
+
+    private void printColoredTabs()
+    {
+        string htmlOutput = getColoredTabsHtmlString();
+        JSRuntime.InvokeVoidAsync("printHtml", htmlOutput);        
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            Console.WriteLine("Component rendered for the first time");
+            //Console.WriteLine("Component rendered for the first time");
         }
     }
 }

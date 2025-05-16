@@ -15,10 +15,15 @@ public static class TabColoring
     {
         int currStringIdx = 0;
         int maxStringIdx = colorPreset.Length - 1;
+        int pageLines = 0;
         string[] lines = tab.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         StringBuilder sb = new StringBuilder();
+        string openPrintGroup = "<div style='break-inside: avoid; page-break-inside: avoid;'>";
+        string closePrintGroup = "</div>";
+        sb.Append(openPrintGroup); // Open group
         foreach (string line in lines)
         {
+            pageLines++;
             // Handle empty lines
             if (string.IsNullOrWhiteSpace(line))
             {
@@ -35,15 +40,22 @@ public static class TabColoring
                 continue;
             }
 
-
             // Valid tab string found
             sb.Append($"<div style='display:block; color: {colorPreset[currStringIdx].ColorCode};'>{line}</div>");
 
             // Prepare next string.
             currStringIdx++;
             if (currStringIdx > maxStringIdx)
+            {
+                // Reset to initial string
                 currStringIdx = 0;
+
+                // Set up next print group
+                sb.Append(closePrintGroup);
+                sb.Append(openPrintGroup);
+            }
         }
+        sb.Append(closePrintGroup);
 
         return sb.ToString();
     }
