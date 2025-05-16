@@ -29,6 +29,7 @@ public static class TabColoring
             {
                 // Handle empty lines
                 sb.AppendLine("<br/>");
+                currStringIdx = 0;
                 continue;
             }
             // Handle non-tab line
