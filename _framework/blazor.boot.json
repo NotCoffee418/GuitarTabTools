@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "GuitarTabTools",
   "resources": {
-    "hash": "sha256-dV2fCK1LON7lhazf0hqk7/J1hnte2jUdfpVkvRLXbZI=",
+    "hash": "sha256-KXPOD+mSSZtSuyaN3PH1ecwyQo5DtRWnkWqMnZ0IMAk=",
     "jsModuleNative": {
       "dotnet.native.8.0.16.khcj4p6y0x.js": "sha256-RiGT44TFZmHOY+Oqvb8o8r+BJVWex6+dPxFxrOiWvFY="
     },
@@ -17,7 +17,7 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "GuitarTabTools.wasm": "sha256-K9TIrpfXl4ZWbk+rwDIixgU+uDipqwaVB3+PKmcbqQE=",
+      "GuitarTabTools.wasm": "sha256-mOFea/j/QfbWZ05muvNm1OC+p07zrs/RvkzcjQf2P3Y=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-bBAa9VvBtIGqgfRwP2wsxhFhtbZoLEuJbPvALDfYSws=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-aNYWFwKZJpRMgfl755US0TCgmuFRoldob/o7mTA6SH0=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-LMMD57VDwCcbOvHrB0U8b61pJo60jFszvKp+k8WfEKA=",
