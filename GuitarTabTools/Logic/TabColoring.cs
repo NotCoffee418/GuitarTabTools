@@ -37,12 +37,12 @@ public static class TabColoring
             {
                 // Reset the current string index if we encounter an empty line
                 currStringIdx = 0;
-                sb.AppendLine($"<div style='display:block'>{line}</div>");
+                sb.AppendLine($"<div style='display:block; white-space: pre;'>{line}</div>");
                 continue;
             }
 
             // Valid tab string found
-            sb.Append($"<div style='display:block; color: {colorPreset[currStringIdx].ColorCode};'>{line}</div>");
+            sb.Append($"<div style='display:block; color: {colorPreset[currStringIdx].ColorCode}; white-space: pre;'>{line}</div>");
 
             // Prepare next string.
             currStringIdx++;
@@ -58,6 +58,7 @@ public static class TabColoring
         }
         sb.Append(closePrintGroup);
 
+        Console.WriteLine(sb.ToString());
         return sb.ToString();
     }
 
